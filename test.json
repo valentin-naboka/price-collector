@@ -1,0 +1,25 @@
+pref={
+    "IsOpt": false,
+    "Retail": true,
+    "Original": true,
+    "Analog": true,
+    "Used": true,
+    "DeliveryFromCountryISO": "UA",
+    "DeliveryFromCityId": null,
+    "DeliveryFromLocationId": 690791,
+    "DeliveryToCountryISO": "UA",
+    "DeliveryToCityId": null,
+    "DeliveryToLocationId": 706483,
+    "LowPrice": true,
+    "ShowCardismantlings": true,
+    "InStock": "all",
+    "Currency": "RUR",
+    "Paging": 150,
+    "PartsGrouping": "analogs-and-originals",
+    "Sort": "rating",
+    "Device": 0,
+    "UserInShoppingCart": [],
+    "DeliveryToRegionId": null
+}
+
+pref={"IsOpt": false,"Retail": true,"Original": true,"Analog": true,"Used": true,"LowPrice": true,"InStock": "all","Currency": "USD","Paging": 300,"PartsGrouping": "analogs-and-originals","Sort": "price"}
