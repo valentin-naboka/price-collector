@@ -1,47 +1,54 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
 	"log"
+	"strconv"
 
-	"github.com/price_detector/data"
-	"github.com/price_detector/models"
-	"github.com/price_detector/parsers"
-	"golang.org/x/net/html"
+	"github.com/360EntSecGroup-Skylar/excelize"
+	"github.com/price-collector/processor"
 )
 
 func main() {
-	pages, err := data.FetchPages("https://avto.pro/api/v1/search/query", data.Request{"8200385222", 1})
+	f, err := excelize.OpenFile("input.xlsx")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	sheetName := f.GetSheetName(1)
+	rows, err := f.GetRows(sheetName)
 	if err != nil {
 		log.Fatal(err)
 	}
-	ap := parsers.Avtopro{}
-	records := make(models.Records, 0)
-	for _, p := range *pages {
-		r, err := ap.Parse(bytes.NewReader(p))
-		if err != nil {
-			log.Fatal(err)
+
+	partIDs := make([]string, len(rows))
+	for i, r := range rows {
+		if i == 0 {
+			continue
 		}
-		//TODO: remove duplicates
-		//TODO: min price, max price, others in ascending order
-		records = append(records, *r...)
+		partIDs[i] = r[1]
 	}
 
-	for _, r := range records {
-		fmt.Printf("%v\n", r)
-	}
-}
-
-func traverse(n *html.Node) string {
-	if n.Data == "table" {
-		return n.Attr[0].Val
-	}
-
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		if res := traverse(c); res != "" {
-			return res
+	proc := processor.NewAvtoproPool()
+	prices, _ := proc.Do(partIDs)
+	for _, price := range prices {
+		if price.UsedMin == 0 && price.UsedMax == 0 && price.NewMin == 0 && price.NewMax == 0 {
+			continue
+		} else {
+			if price.UsedMin != 0 {
+				f.SetCellFloat(sheetName, "C"+strconv.Itoa(price.Row+1), price.UsedMin, 0, 64)
+			}
+			if price.UsedMax != 0 {
+				f.SetCellFloat(sheetName, "D"+strconv.Itoa(price.Row+1), price.UsedMax, 0, 64)
+			}
+			if price.NewMin != 0 {
+				f.SetCellFloat(sheetName, "E"+strconv.Itoa(price.Row+1), price.NewMin, 0, 64)
+			}
+			if price.NewMax != 0 {
+				f.SetCellFloat(sheetName, "F"+strconv.Itoa(price.Row+1), price.NewMax, 0, 64)
+			}
 		}
 	}
-	return ""
+	f.SaveAs("output.xlsx")
 }

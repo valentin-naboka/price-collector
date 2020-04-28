@@ -3,48 +3,63 @@ package parsers
 import (
 	"fmt"
 	"io"
+	"log"
+	"strconv"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/price_detector/models"
+	"github.com/price-collector/models"
 )
 
 type Avtopro struct {
 }
 
-func (ap *Avtopro) Parse(r io.Reader) (*models.Records, error) {
-	records := make(models.Records, 0)
+func (ap *Avtopro) Parse(r io.Reader, partID string) (*models.UsedRecords, *models.NewRecords, error) {
+	usedRecords := make(models.UsedRecords, 0)
+	newRecords := make(models.NewRecords, 0)
 
 	doc, err := goquery.NewDocumentFromReader(r)
 	if err != nil {
-		return nil, fmt.Errorf("failed to create html dom: %w", err)
+		return nil, nil, fmt.Errorf("failed to create html dom: %w", err)
 	}
-	//TODO: check nil pointers
+
 	table := doc.Find("table").Find("tbody")
 	rows := table.Children()
 	for row := rows.First(); row.Nodes != nil; row = row.Next() {
 		cols := row.Children()
 		record := models.Record{}
 		record.Seller = row.AttrOr("data-seller-name", "N/A")
+		usedPart := false
+
 		for col := cols.First(); col.Nodes != nil; col = col.Next() {
-			t, ok := col.Attr("data-type")
-			if ok {
+			if t, ok := col.Attr("data-type"); ok {
 				switch t {
 				case "price":
 					if v, ok := col.Attr("data-value"); ok {
-						record.Price = v
-					}
-				case "delivery":
-					if v, ok := col.Attr("data-city"); ok {
-						record.City = v
+						f, err := strconv.ParseFloat(strings.TrimSpace(v), 64)
+						if err != nil {
+							log.Printf("failed to convert price %s to float: %s", v, err)
+							break
+						}
+						record.Price = f
 					}
 				case "code":
 					record.ID = strings.TrimSpace(col.Text())
 				}
 			}
+
+			if v, ok := col.Attr("data-sub-title"); ok && v == "Б/У" {
+				usedPart = true
+			}
 		}
-		records = append(records, record)
+		if record.ID == partID {
+			if usedPart {
+				usedRecords = append(usedRecords, record)
+			} else {
+				newRecords = append(newRecords, record)
+			}
+		}
 	}
 
-	return &records, nil
+	return &usedRecords, &newRecords, nil
 }

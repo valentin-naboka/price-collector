@@ -23,15 +23,14 @@ type response struct {
 }
 
 const searchURL string = "https://avto.pro/"
-const requestTimeout time.Duration = time.Second * 30
+const requestTimeout time.Duration = time.Second * 120
 
 //TODO: make JSON
-const cookie string = `{"IsOpt": false,"Retail": true,"Original": true,"Analog": true,"Used": true,"LowPrice": true,"InStock": "all","Currency": "USD","Paging": 300,"PartsGrouping": "analogs-and-originals","Sort": "price"}`
+const cookie string = `{"IsOpt":false,"Retail":true,"Original":true,"Analog":false,"Used":true,"DeliveryFromCountryISO":"UA","DeliveryFromCityId":null,"DeliveryFromLocationId":690791,"DeliveryToCountryISO":"UA","DeliveryToCityId":null,"DeliveryToLocationId":706483,"LowPrice":true,"ShowCardismantlings":true,"InStock":"all","Currency":"USD","Paging":350,"PartsGrouping":"analogs-and-originals","Sort":"price","Device":0,"UserInShoppingCart":[],"DeliveryToRegionId":null}`
 
 type Page []byte
 type Pages [][]byte
 
-//Request{"8200385222", 1}
 func FetchPages(inputUrl string, req Request) (*Pages, error) {
 	client := &http.Client{}
 
