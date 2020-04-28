@@ -70,5 +70,6 @@ func main() {
 		}
 		f.SaveAs("./output/" + filename)
 	}
+	println("Done!")
 	fmt.Scanln()
 }
