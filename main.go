@@ -18,6 +18,10 @@ func main() {
 		log.Fatalf("error walking input dir: %s", err)
 	}
 
+	if err = os.RemoveAll("output"); err != nil {
+		log.Fatalf("failed to remove dir: %s", err)
+	}
+
 	if err = os.Mkdir("output", os.ModePerm); err != nil {
 		log.Fatalf("failed to create dir: %s", err)
 	}
@@ -66,4 +70,5 @@ func main() {
 		}
 		f.SaveAs("./output/" + filename)
 	}
+	fmt.Scanln()
 }
