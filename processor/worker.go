@@ -2,6 +2,7 @@ package processor
 
 import (
 	"bytes"
+	"fmt"
 	"log"
 	"math"
 	"sync"
@@ -50,8 +51,8 @@ func (ap *avtoproPool) Do(partsID []string) ([]Price, error) {
 					used, new := getPartPrices(part.ID)
 					usedMin, usedMax := getMinMax(models.Records(used))
 					newMin, newMax := getMinMax(models.Records(new))
-					//TODO: remove
-					//fmt.Printf("id %s min used %.0f, max used %.0f, min new %.0f, max new %.0f\n", part.ID, usedMin, usedMax, newMin, newMax)
+
+					fmt.Printf("id %s min used %.0f, max used %.0f, min new %.0f, max new %.0f\n", part.ID, usedMin, usedMax, newMin, newMax)
 
 					p := Price{}
 					p.Row = part.Idx
