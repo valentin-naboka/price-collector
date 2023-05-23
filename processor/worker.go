@@ -5,11 +5,10 @@ import (
 	"fmt"
 	"log"
 	"math"
+	"price-collector/data"
+	"price-collector/models"
+	"price-collector/parsers"
 	"sync"
-
-	"github.com/price-collector/data"
-	"github.com/price-collector/models"
-	"github.com/price-collector/parsers"
 )
 
 type Price struct {
@@ -38,7 +37,7 @@ type avtoproPool struct {
 
 const GoRoutinesNum int = 30
 
-//TODO: return error
+// TODO: return error
 func (ap *avtoproPool) Do(partsID []string) ([]Price, error) {
 	input := make(chan part)
 	output := make(chan Price)

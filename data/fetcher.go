@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-//Request ...
+// Request ...
 type Request struct {
 	Query    string
 	RegionID int
@@ -25,7 +25,7 @@ type response struct {
 const searchURL string = "https://avto.pro/"
 const requestTimeout time.Duration = time.Second * 120
 
-//TODO: make JSON
+// TODO: make JSON
 const cookie string = `{"IsOpt":false,"Retail":true,"Original":true,"Analog":false,"Used":true,"DeliveryFromCountryISO":"UA","DeliveryFromCityId":null,"DeliveryFromLocationId":690791,"DeliveryToCountryISO":"UA","DeliveryToCityId":null,"DeliveryToLocationId":706483,"LowPrice":true,"ShowCardismantlings":true,"InStock":"all","Currency":"USD","Paging":350,"PartsGrouping":"analogs-and-originals","Sort":"price","Device":0,"UserInShoppingCart":[],"DeliveryToRegionId":null}`
 
 type Page []byte

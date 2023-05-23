@@ -1,6 +1,6 @@
 package models
 
-//Record ...
+// Record ...
 type Record struct {
 	ID string `header:"ID"`
 	//City   string `header:"City"`

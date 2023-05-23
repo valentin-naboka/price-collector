@@ -7,8 +7,9 @@ import (
 	"strconv"
 	"strings"
 
+	"price-collector/models"
+
 	"github.com/PuerkitoBio/goquery"
-	"github.com/price-collector/models"
 )
 
 type Avtopro struct {

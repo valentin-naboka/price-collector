@@ -5,10 +5,10 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"price-collector/processor"
 	"strconv"
 
 	"github.com/360EntSecGroup-Skylar/excelize"
-	"github.com/price-collector/processor"
 )
 
 func main() {
@@ -35,10 +35,7 @@ func main() {
 		}
 
 		sheetName := f.GetSheetName(1)
-		rows, err := f.GetRows(sheetName)
-		if err != nil {
-			log.Fatal(err)
-		}
+		rows := f.GetRows(sheetName)
 
 		partIDs := make([]string, len(rows))
 		for i, r := range rows {
@@ -55,16 +52,16 @@ func main() {
 				continue
 			} else {
 				if price.UsedMin != 0 {
-					f.SetCellFloat(sheetName, "C"+strconv.Itoa(price.Row+1), price.UsedMin, 0, 64)
+					f.SetCellValue(sheetName, "C"+strconv.Itoa(price.Row+1), price.UsedMin)
 				}
 				if price.UsedMax != 0 {
-					f.SetCellFloat(sheetName, "D"+strconv.Itoa(price.Row+1), price.UsedMax, 0, 64)
+					f.SetCellValue(sheetName, "D"+strconv.Itoa(price.Row+1), price.UsedMax)
 				}
 				if price.NewMin != 0 {
-					f.SetCellFloat(sheetName, "E"+strconv.Itoa(price.Row+1), price.NewMin, 0, 64)
+					f.SetCellValue(sheetName, "E"+strconv.Itoa(price.Row+1), price.NewMin)
 				}
 				if price.NewMax != 0 {
-					f.SetCellFloat(sheetName, "F"+strconv.Itoa(price.Row+1), price.NewMax, 0, 64)
+					f.SetCellValue(sheetName, "F"+strconv.Itoa(price.Row+1), price.NewMax)
 				}
 			}
 		}
