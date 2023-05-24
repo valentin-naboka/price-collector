@@ -35,5 +35,9 @@ jobs:
         with:
           name: macOS-artifacts
           path: artifacts/
+        
+      - name: Upload Coverage
+        uses: actions/upload-artifact@v2
+        with:
           name: report.html
           path: report.html
