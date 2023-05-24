@@ -25,7 +25,8 @@ jobs:
         run: GOOS=linux GOARCH=arm64 go build -o app_arm64
 
       - name: Test
-        run:  go test -coverprofile=coverage.out  ./... 
+        run:  |
+              go test -coverprofile=coverage.out  ./... 
               go tool cover -html=coverage.out -o report.html
 
       - name: Create Artifacts
