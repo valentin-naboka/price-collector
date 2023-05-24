@@ -33,7 +33,7 @@ jobs:
         run: |
           mkdir artifacts
           mv app artifacts/app
-          mv app artifacts/app_arm64
+          mv app_arm64 artifacts/app_arm64
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
