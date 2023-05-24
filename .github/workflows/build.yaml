@@ -3,11 +3,11 @@ name: Build for macOS
 on:
   push:
     branches:
-      - master
+      - GHActionsactions
 
 jobs:
   build:
-    runs-on: macOS-latest
+    runs-on: macOS
 
     steps:
       - name: Checkout repository
@@ -21,6 +21,10 @@ jobs:
       - name: Build
         run: go build -o app 
 
+      - name: Test
+        run:  go test -coverprofile=coverage.out  ./... 
+              go tool cover -html=coverage.out -o report.html
+
       - name: Create Artifacts
         run: |
           mkdir artifacts
@@ -31,3 +35,5 @@ jobs:
         with:
           name: macOS-artifacts
           path: artifacts/
+          name: report.html
+          path: report.html
