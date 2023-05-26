@@ -7,7 +7,7 @@ on:
 
 jobs:
   job_test:
-    uses: .github/workflows/reusable.yaml
+    uses: .github/workflows/reusable.yaml@GHActionsactions
 
   build:
     runs-on: ubuntu-latest
