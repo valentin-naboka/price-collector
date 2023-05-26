@@ -1,0 +1,29 @@
+name: Build for macOS
+
+on:
+  workflow_call:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Create Artifacts
+        run: |
+          mkdir artifacts
+          touch artifacts/app
+
+      # - name: Upload Artifacts
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: macOS-artifacts
+      #     path: artifacts/
+        
+      # - name: Upload Coverage
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: report.html
+      #     path: report.html
