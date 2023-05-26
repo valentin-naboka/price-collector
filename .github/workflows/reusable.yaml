@@ -19,8 +19,15 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
+          name: macOS-artifacts2
+          path: artifacts/app.txt 
+
+      - name: Upload Artifacts2
+        uses: actions/upload-artifact@v3
+        with:
           name: macOS-artifacts
-          path: artifacts/app.txt
+          path: artifacts/app.txt 
+          
         
       # - name: Upload Coverage
       #   uses: actions/upload-artifact@v2
